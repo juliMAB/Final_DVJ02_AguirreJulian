@@ -13,14 +13,6 @@ public class GameCanvasController : MonoBehaviour
         score.text = "Score: 0";
         time.text = "Time:\n00:00"; 
     }
-
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.A))
-        {
-            UpdateScore();
-        }
-    }
     void UpdateScore()
     {
         string newScore= "Score: ";
