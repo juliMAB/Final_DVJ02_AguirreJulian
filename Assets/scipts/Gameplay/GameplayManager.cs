@@ -15,6 +15,8 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] ShipManager player;
     [SerializeField] GameCanvasController canvas;
     [SerializeField] BoxesManager boxesManager;
+    [SerializeField] GameSceneController gameSceneController;
+    int boxesCuantity;
     private void Start()
     {
         Mydata.ScorePerKill = scorePerKill;
@@ -26,25 +28,40 @@ public class GameplayManager : MonoBehaviour
         canvas.ScoreF = Mydata.Score;
         canvas.UpdateScore();
     }
+    void allBoxesDestoy()
+    {
+        if (Mydata.getDestroyBoxes== boxesCuantity)
+        {
+            Mydata.Result = Data.END.WIN;
+            EndGame();
+        }
+    }
     void chargeBoxes()
     {
 
         foreach (var item in boxesManager.boxes)
         {
+            boxesCuantity++;
             item.OnBoxKill += Mydata.OnBoxKill;
             item.OnBoxKill += UpdateCanvas;
+            item.OnBoxKill += allBoxesDestoy;
         }
     }
     void EndGame()
     {
         Mydata.DistanceTraveled= (player.getShipController.TotalDistance);
         DataLogger.Get().SaveData(Mydata);
-
+        gameSceneController.LoadEnd();
     }
     private void Update()
     {
         gameTime -= Time.deltaTime;
         canvas.TimeF = gameTime;
         canvas.UpdateTime();
+        if (gameTime<0)
+        {
+            Mydata.Result = Data.END.LOSE;
+            EndGame();
+        }
     }
 }
