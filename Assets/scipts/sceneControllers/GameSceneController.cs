@@ -8,6 +8,8 @@ public class GameSceneController : MonoBehaviour
     
     public void LoadMenu() => sceneController.Get().LoadMenu();
 
+    public void LoadEnd() => sceneController.Get().LoadEnd();
+
     public void StopTime() => Time.timeScale = 0;
 
     public void ResumeTime() => Time.timeScale = 1;
