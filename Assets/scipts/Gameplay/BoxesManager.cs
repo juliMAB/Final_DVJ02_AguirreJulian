@@ -26,7 +26,7 @@ public class BoxesManager : MonoBehaviour
     void RandvecInTerrain(GameObject go)
     {
         RaycastHit hit;
-        float randomPositionX = spawner.transform.position.z + UnityEngine.Random.Range(-spawner.transform.localScale.x / 2, spawner.transform.localScale.x / 2);
+        float randomPositionX = spawner.transform.position.x + UnityEngine.Random.Range(-spawner.transform.localScale.x / 2, spawner.transform.localScale.x / 2);
         float randomPositionZ = spawner.transform.position.z + UnityEngine.Random.Range(-spawner.transform.localScale.z / 2, spawner.transform.localScale.z / 2);
         float randomPositionY = 0f;
 
