@@ -8,4 +8,14 @@ public class bullet : MonoBehaviour
     {
         Destroy(gameObject,5);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        IKilleable killeable = collision.gameObject.GetComponent<IKilleable>();
+        if (killeable!=null)
+        {
+            killeable.kill();
+        }
+        Destroy(gameObject);
+    }
 }
