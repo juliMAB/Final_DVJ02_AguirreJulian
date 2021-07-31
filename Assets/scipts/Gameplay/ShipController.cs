@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
-    public Action<float> OnMove;
-    [SerializeField]float velocity;
+    [SerializeField] float totalDistance;
+    public float TotalDistance => totalDistance;
+    [SerializeField] float velocity;
     [SerializeField] float angleVelocity;
     Rigidbody rb;
     [SerializeField] GameObject canon;
@@ -14,6 +15,8 @@ public class ShipController : MonoBehaviour
     [SerializeField] GameObject goShoot;
     [SerializeField] float shootForce;
     List<Vector3> targets = new List<Vector3>();
+    [Range(2,0)]
+    [SerializeField] float rotationSpeed;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -23,6 +26,7 @@ public class ShipController : MonoBehaviour
     {
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        Debug.DrawRay(ray.origin, ray.direction * 100);
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             transform.Rotate(transform.up * Time.deltaTime * -angleVelocity);
@@ -33,11 +37,17 @@ public class ShipController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
-            transform.position += (transform.forward * Time.deltaTime * velocity);
+            Vector3 res = transform.forward * Time.deltaTime * velocity;
+            float distance = Mathf.Abs(Vector3.Distance(transform.position, transform.position + res));
+            totalDistance += distance;
+            transform.position += (res);
         }
         if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
-            transform.position += (transform.forward * Time.deltaTime * -velocity);
+            Vector3 res = transform.forward * Time.deltaTime * velocity;
+            float distance = Mathf.Abs(Vector3.Distance(transform.position, transform.position + res));
+            totalDistance += distance;
+            transform.position -= (res);
         }
         RaycastHit hit;
         if (Input.GetMouseButtonDown(0))
@@ -45,7 +55,16 @@ public class ShipController : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 StopAllCoroutines();
-                StartCoroutine(corrutineRotate(hit.point));
+                IKilleable killeable = hit.collider.gameObject.GetComponent<IKilleable>();
+                if (killeable != null)
+                {
+                    StartCoroutine(corrutineRotate(hit.point- new Vector3(0, hit.collider.gameObject.transform.localScale.y / 2, 0) ));
+                }
+                else
+                {
+                    StartCoroutine(corrutineRotate(hit.point));
+                }
+                    
             }
 
         }
@@ -58,16 +77,16 @@ public class ShipController : MonoBehaviour
     }
     IEnumerator corrutineRotate(Vector3 target)
     {
-        //Quaternion a = canon.transform.rotation;
-        Quaternion b = Quaternion.LookRotation(target);
+        Quaternion a = canon.transform.rotation;
+        Quaternion b = Quaternion.LookRotation(target-transform.position,transform.up);
         float t = 0;
         while (0.5f <Quaternion.Angle(canon.transform.rotation, b))
         {
             canon.transform.rotation = Quaternion.Lerp(canon.transform.rotation, b, t);
-            t += Time.deltaTime;
+            t += Time.deltaTime*rotationSpeed;
             yield return null;
         }
         GameObject go= Instantiate(goShoot, canonPoint.transform.position, Quaternion.identity);
-        go.GetComponent<Rigidbody>().AddForce(target* shootForce, ForceMode.Impulse);
+        go.GetComponent<Rigidbody>().AddForce((target-transform.position) * shootForce, ForceMode.Impulse);
     }
 }
