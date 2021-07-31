@@ -5,13 +5,13 @@ using MonoBehaviourSingletonScript;
 
 public class DataLogger : MonoBehaviourSingleton<DataLogger>
 {
-    data myData;
+    Data myData;
     private void Start()
     {
         
     }
 
-    public void SaveData(data data)
+    public void SaveData(Data data)
     {
         myData = data; //la info del player.
     }
