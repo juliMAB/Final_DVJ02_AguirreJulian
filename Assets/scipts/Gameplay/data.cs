@@ -15,7 +15,7 @@ public class Data
     int score;
     public int Score { get { return score; } set { score = value; } }
 
-    int destroyBoxes;
+    int destroyBoxes=0;
     public int getDestroyBoxes => destroyBoxes;
 
     float distanceTraveled;
@@ -27,5 +27,6 @@ public class Data
     public void OnBoxKill()
     {
         score += scorePerKill;
+        destroyBoxes++;
     }
 }
