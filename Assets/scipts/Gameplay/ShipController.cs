@@ -80,7 +80,7 @@ public class ShipController : MonoBehaviour
         Quaternion a = canon.transform.rotation;
         Quaternion b = Quaternion.LookRotation(target-transform.position,transform.up);
         float t = 0;
-        while (0.5f <Quaternion.Angle(canon.transform.rotation, b))
+        while (0.05f <Quaternion.Angle(canon.transform.rotation, b))
         {
             canon.transform.rotation = Quaternion.Lerp(canon.transform.rotation, b, t);
             t += Time.deltaTime*rotationSpeed;
