@@ -8,6 +8,7 @@ public class Bomb : MonoBehaviour
     [SerializeField] float power = 10.0f;
     [SerializeField] float radius = 5.0f;
     [SerializeField] float upforce = 1.0f;
+    [SerializeField] int damage = 10;
     [SerializeField] LayerMask playerLayer;
     [SerializeField] Animator animator;
 
@@ -64,6 +65,11 @@ public class Bomb : MonoBehaviour
             if (rb != null)
             {
                 rb.AddExplosionForce(power, transform.position, radius, upforce, ForceMode.Impulse); 
+            }
+            IHitable hitable = hit.gameObject.GetComponent<IHitable>();
+            if (hitable != null)
+            {
+                hitable.TakeDamage(damage);
             }
         }
         Destroy(gameObject);
