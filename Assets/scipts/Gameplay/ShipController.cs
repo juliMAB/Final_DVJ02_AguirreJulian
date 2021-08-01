@@ -3,28 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShipController : MonoBehaviour
+public class ShipController : Tank
 {
-    [SerializeField] float totalDistance;
-    public Action OnStartShoot;
+    float totalDistance;
     bool moving;
     public Action<bool> OnStartMove;
     public float TotalDistance => totalDistance;
     [SerializeField] float velocity;
     [SerializeField] float angleVelocity;
-    Rigidbody rb;
-    [SerializeField] GameObject pivCanon;
-    [SerializeField] GameObject pivHead;
-    [SerializeField] GameObject canonPoint;
-    [SerializeField] GameObject goShoot;
-    [SerializeField] float shootForce;
-    [Range(2,0)]
-    [SerializeField] float rotationSpeed;
-    Vector3 target;
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
 
     public void Update()
     {
@@ -75,40 +61,19 @@ public class ShipController : MonoBehaviour
                 IKilleable killeable = hit.collider.gameObject.GetComponent<IKilleable>();
                 if (killeable != null)
                 {
-                    StartCoroutine(corrutineRotate(hit.point- new Vector3(0, hit.collider.gameObject.transform.localScale.y / 2, 0) ));
+                    StartCoroutine(headRotate(hit.point- new Vector3(0, hit.collider.gameObject.transform.localScale.y / 2, 0) ));
                 }
                 else
                 {
-                    StartCoroutine(corrutineRotate(hit.point));
+                    StartCoroutine(headRotate(hit.point));
                 }
-                target = hit.point;
+                Target = hit.point;
             }
-
         }
         if (Physics.Raycast(transform.position, -Vector3.up, out hit, LayerMask.NameToLayer("Terrain")))
         {
             Quaternion quatDestiny = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
             transform.rotation = Quaternion.Lerp(transform.rotation,quatDestiny,Time.deltaTime*5);
         }
-        
-    }
-    IEnumerator corrutineRotate(Vector3 target)
-    {
-        Quaternion a = pivHead.transform.rotation;
-        Quaternion b = Quaternion.LookRotation(target-transform.position,transform.up);
-        float t = 0;
-        while (0.05f <Quaternion.Angle(pivHead.transform.rotation, b))
-        {
-            pivHead.transform.rotation = Quaternion.Lerp(a, b, t);
-            t += Time.deltaTime*rotationSpeed;
-            yield return null;
-        }
-        
-        OnStartShoot?.Invoke();
-    }
-    public void Shoot()
-    {
-        GameObject go = Instantiate(goShoot, canonPoint.transform.position, Quaternion.identity);
-        go.GetComponent<Rigidbody>().AddForce((target - transform.position) * shootForce, ForceMode.Impulse);
     }
 }
