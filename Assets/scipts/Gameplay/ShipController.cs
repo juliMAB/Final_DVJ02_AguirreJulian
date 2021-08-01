@@ -10,7 +10,8 @@ public class ShipController : MonoBehaviour
     [SerializeField] float velocity;
     [SerializeField] float angleVelocity;
     Rigidbody rb;
-    [SerializeField] GameObject canon;
+    [SerializeField] GameObject pivCanon;
+    [SerializeField] GameObject pivHead;
     [SerializeField] GameObject canonPoint;
     [SerializeField] GameObject goShoot;
     [SerializeField] float shootForce;
@@ -77,12 +78,12 @@ public class ShipController : MonoBehaviour
     }
     IEnumerator corrutineRotate(Vector3 target)
     {
-        Quaternion a = canon.transform.rotation;
+        Quaternion a = pivHead.transform.rotation;
         Quaternion b = Quaternion.LookRotation(target-transform.position,transform.up);
         float t = 0;
-        while (0.05f <Quaternion.Angle(canon.transform.rotation, b))
+        while (0.05f <Quaternion.Angle(pivHead.transform.rotation, b))
         {
-            canon.transform.rotation = Quaternion.Lerp(canon.transform.rotation, b, t);
+            pivHead.transform.rotation = Quaternion.Lerp(a, b, t);
             t += Time.deltaTime*rotationSpeed;
             yield return null;
         }
