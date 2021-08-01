@@ -5,6 +5,7 @@ using UnityEngine;
 public class bullet : MonoBehaviour
 {
     [SerializeField] GameObject explotionTarget;
+    [SerializeField] int damage=5;
     void Start()
     {
         Destroy(gameObject,5);
@@ -16,6 +17,11 @@ public class bullet : MonoBehaviour
         if (killeable!=null)
         {
             killeable.kill();
+        }
+        IHitable hitable = collision.gameObject.GetComponent<IHitable>();
+        if (hitable!=null)
+        {
+            hitable.TakeDamage(damage);
         }
         GameObject go = Instantiate(explotionTarget, collision.contacts[0].point, Quaternion.identity, null);
         Destroy(go, 2);
