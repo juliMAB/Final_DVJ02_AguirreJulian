@@ -13,4 +13,8 @@ public class PlayerFx : MonoBehaviour
         GameObject go = Instantiate(explotion,canonPoint.transform.position,Quaternion.identity,null);
         Destroy(go, 2);
     }
+    void Destroy_TankEffect_1()
+    {
+        Destroy(gameObject);
+    }
 }

@@ -22,6 +22,12 @@ public class GameplayManager : MonoBehaviour
         Mydata.ScorePerKill = scorePerKill;
         boxesManager.OnBoxCreated += chargeBoxes;
         boxesManager.dependentStart();
+        player.getShipController.OnDeath += MyTankDeath;
+    }
+    void MyTankDeath()
+    {
+        Mydata.Result = Data.END.LOSE;
+        EndGame();
     }
     void UpdateCanvas()
     {
