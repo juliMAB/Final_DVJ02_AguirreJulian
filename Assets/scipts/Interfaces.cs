@@ -6,3 +6,7 @@ public interface IKilleable
 {
     void kill();
 }
+public interface IHitable
+{
+    void TakeDamage(int damage);
+}
