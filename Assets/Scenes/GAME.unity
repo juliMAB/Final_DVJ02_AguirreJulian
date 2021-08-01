@@ -198,13 +198,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 240727293}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.24144903, y: -0, z: -0, w: 0.9704135}
+  m_LocalPosition: {x: 0, y: 30, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 27.944002, y: 0, z: 0}
 --- !u!114 &240727297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -938,7 +938,8 @@ MonoBehaviour:
   totalDistance: 0
   velocity: 10
   angleVelocity: 100
-  canon: {fileID: 2046270333}
+  pivCanon: {fileID: 1511275148}
+  pivHead: {fileID: 2046270333}
   canonPoint: {fileID: 1511275148}
   goShoot: {fileID: 1736143789821940674, guid: e64b5e70124f6d240a5f5cf741d97212, type: 3}
   shootForce: 5
@@ -952,10 +953,10 @@ BoxCollider:
   m_GameObject: {fileID: 703605911}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 0.26, z: 0}
 --- !u!23 &703605915
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1011,7 +1012,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 703605911}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.128, y: -0.902, z: -2.049}
+  m_LocalPosition: {x: 0, y: 12.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3757333071664951201}
@@ -1031,6 +1032,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipController: {fileID: 703605913}
+  playerFx: {fileID: 3274135520539957266}
+  animator: {fileID: 3274135520539957265}
 --- !u!1 &781903184
 GameObject:
   m_ObjectHideFlags: 0
@@ -2227,7 +2230,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: b268af8d91e09fd4dbfc76a7f7216fd4, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &1776665241
 Terrain:
   m_ObjectHideFlags: 0
@@ -2637,6 +2640,8 @@ GameObject:
   - component: {fileID: 3757333071664951201}
   - component: {fileID: 7109935671958774608}
   - component: {fileID: 5137566370749297547}
+  - component: {fileID: 3274135520539957266}
+  - component: {fileID: 3274135520539957265}
   m_Layer: 0
   m_Name: TankFree_Blue
   m_TagString: Untagged
@@ -2644,6 +2649,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!95 &3274135520539957265
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3274135520539957264}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 254db5ae0666ecf48b4771e819fece16, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3274135520539957266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3274135520539957264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9fbe756fcead740809c4bec079553d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explotion: {fileID: 7464325556059114707, guid: f93cb2a12ba1a1d4783200a735c0ee05,
+    type: 3}
+  canonPoint: {fileID: 1511275148}
 --- !u!33 &3313594962113498160
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2707,8 +2746,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3274135520539957264}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.11554885, y: -0.31401783, z: 0.23747659}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2046270334}
