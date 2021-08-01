@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
+    [SerializeField] GameObject explotionTarget;
     void Start()
     {
         Destroy(gameObject,5);
@@ -16,6 +17,8 @@ public class bullet : MonoBehaviour
         {
             killeable.kill();
         }
+        GameObject go = Instantiate(explotionTarget, collision.contacts[0].point, Quaternion.identity, null);
+        Destroy(go, 2);
         Destroy(gameObject);
     }
 }
