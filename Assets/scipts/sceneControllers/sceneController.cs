@@ -20,6 +20,10 @@ namespace scene
         {
             SceneManager.LoadScene("END");
         }
+        public void LoadHigscoreBoard()
+        {
+            SceneManager.LoadScene("HIGHSCOREBOARD");
+        }
         public void ExitGame()
         {
             Application.Quit();

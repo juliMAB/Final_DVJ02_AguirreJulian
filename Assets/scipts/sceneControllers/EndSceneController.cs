@@ -6,4 +6,6 @@ using UnityEngine;
 public class EndSceneController : MonoBehaviour
 {
     public void LoadMenu() => sceneController.Get().LoadMenu();
+
+    public void LoadHighscore() => sceneController.Get().LoadHigscoreBoard();
 }
