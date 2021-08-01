@@ -61,6 +61,7 @@ public class ShipController : Tank
                 IKilleable killeable = hit.collider.gameObject.GetComponent<IKilleable>();
                 if (killeable != null)
                 {
+
                     StartCoroutine(headRotate(hit.point- new Vector3(0, hit.collider.gameObject.transform.localScale.y / 2, 0) ));
                 }
                 else

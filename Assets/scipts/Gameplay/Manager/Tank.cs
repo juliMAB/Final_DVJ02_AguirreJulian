@@ -17,7 +17,7 @@ public class Tank : MonoBehaviour,IHitable
     [SerializeField] int damage;
     private Vector3 target;
     public Vector3 Target { set { target = value; } get { return target; } }
-    private bool cr_running;
+    private bool cr_running=false;
     public bool CR_running { set { cr_running = value; } get { return cr_running; } }
     public System.Action OnStartShoot;
     public System.Action OnDeath;
@@ -46,7 +46,7 @@ public class Tank : MonoBehaviour,IHitable
         Quaternion a = pivHead.transform.rotation;
         Quaternion b = Quaternion.LookRotation(target - transform.position, transform.up);
         float t = 0;
-        while (0.05f < Quaternion.Angle(pivHead.transform.rotation, b))
+        while (0.05f <= Quaternion.Angle(pivHead.transform.rotation, b))
         {
             pivHead.transform.rotation = Quaternion.Lerp(a, b, t);
             t += Time.deltaTime * rotationSpeed;
