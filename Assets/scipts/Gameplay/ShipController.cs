@@ -6,6 +6,9 @@ using UnityEngine;
 public class ShipController : MonoBehaviour
 {
     [SerializeField] float totalDistance;
+    public Action OnStartShoot;
+    bool moving;
+    public Action<bool> OnStartMove;
     public float TotalDistance => totalDistance;
     [SerializeField] float velocity;
     [SerializeField] float angleVelocity;
@@ -15,9 +18,9 @@ public class ShipController : MonoBehaviour
     [SerializeField] GameObject canonPoint;
     [SerializeField] GameObject goShoot;
     [SerializeField] float shootForce;
-    List<Vector3> targets = new List<Vector3>();
     [Range(2,0)]
     [SerializeField] float rotationSpeed;
+    Vector3 target;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -28,6 +31,14 @@ public class ShipController : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
         Debug.DrawRay(ray.origin, ray.direction * 100);
+        if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.UpArrow) || !Input.GetKey(KeyCode.W))
+        {
+            if (moving)
+            {
+                moving = false;
+                OnStartMove?.Invoke(moving);
+            }
+        }
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             transform.Rotate(transform.up * Time.deltaTime * -angleVelocity);
@@ -42,6 +53,9 @@ public class ShipController : MonoBehaviour
             float distance = Mathf.Abs(Vector3.Distance(transform.position, transform.position + res));
             totalDistance += distance;
             transform.position += (res);
+            moving = true;
+            OnStartMove?.Invoke(moving) ;
+           
         }
         if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
@@ -49,6 +63,8 @@ public class ShipController : MonoBehaviour
             float distance = Mathf.Abs(Vector3.Distance(transform.position, transform.position + res));
             totalDistance += distance;
             transform.position -= (res);
+            moving = true;
+            OnStartMove?.Invoke(moving);
         }
         RaycastHit hit;
         if (Input.GetMouseButtonDown(0))
@@ -65,14 +81,14 @@ public class ShipController : MonoBehaviour
                 {
                     StartCoroutine(corrutineRotate(hit.point));
                 }
-                    
+                target = hit.point;
             }
 
         }
         if (Physics.Raycast(transform.position, -Vector3.up, out hit, LayerMask.NameToLayer("Terrain")))
         {
             Quaternion quatDestiny = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
-            transform.rotation = quatDestiny;
+            transform.rotation = Quaternion.Lerp(transform.rotation,quatDestiny,Time.deltaTime*5);
         }
         
     }
@@ -87,7 +103,12 @@ public class ShipController : MonoBehaviour
             t += Time.deltaTime*rotationSpeed;
             yield return null;
         }
-        GameObject go= Instantiate(goShoot, canonPoint.transform.position, Quaternion.identity);
-        go.GetComponent<Rigidbody>().AddForce((target-transform.position) * shootForce, ForceMode.Impulse);
+        
+        OnStartShoot?.Invoke();
+    }
+    public void Shoot()
+    {
+        GameObject go = Instantiate(goShoot, canonPoint.transform.position, Quaternion.identity);
+        go.GetComponent<Rigidbody>().AddForce((target - transform.position) * shootForce, ForceMode.Impulse);
     }
 }
