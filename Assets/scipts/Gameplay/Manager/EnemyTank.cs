@@ -9,7 +9,7 @@ public class EnemyTank : Tank
     [SerializeField] PlayerFx playerFx;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator animator;
-    [SerializeField] LayerMask player;
+    [SerializeField] LayerMask playerLayer;
     [SerializeField] float distanceToFollow;
     [SerializeField] float distanceToShoot;
     Transform target;
@@ -18,41 +18,14 @@ public class EnemyTank : Tank
     {
         playerFx.OnShoot += Shoot;
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if ((player & 1 << other.gameObject.layer) == 1 << other.gameObject.layer)
-        {
-            target = other.transform;
-        }
-    }
+    
     void Update()
     {
-        //if (Physics.SphereCast(transform.position, 10, transform.forward, out RaycastHit hit, 10))
-        //{
-        //    Debug.Log("Te veo perra");
-        //    agent.SetDestination(hit.point);
-        //    animator.SetBool("OnMove", true);
-        //    if (Vector3.Distance(transform.position, hit.point) <= distanceToShoot)
-        //    {
-        //        animator.SetBool("OnMove", false);
-
-        //        if (!CR_running)
-        //        {
-        //            Target = hit.point;
-        //            animator.Play("shoot");
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        animator.SetBool("OnMove", true);
-        //    }
-        //    FaceTarget(hit.point);
-        //}
-        //else
-        //{
-        //    animator.SetBool("OnMove", false);
-        //}
+        Collider[] colliders = Physics.OverlapSphere(transform.position, distanceToFollow, playerLayer);
+        foreach (Collider hit in colliders)
+        {
+            target = hit.transform;
+        }
         if (target!=null)
         {
             float distance = Vector3.Distance(target.position, transform.position);

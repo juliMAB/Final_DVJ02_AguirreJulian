@@ -9,4 +9,6 @@ public interface IKilleable
 public interface IHitable
 {
     void TakeDamage(int damage);
+
+    void death();
 }

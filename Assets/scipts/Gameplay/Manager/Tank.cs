@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[SerializeField]
+
 public class Tank : MonoBehaviour,IHitable
 {
     [Header("ClassTank")]
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject canonPoint;
     [SerializeField] GameObject pivHead;
+    [SerializeField] GameObject deathTank;
     [SerializeField] float shootForce;
+    [Range(2, 0)]
     [SerializeField] float rotationSpeed;
     [SerializeField] int lives;
     [SerializeField] int damage;
@@ -18,6 +20,7 @@ public class Tank : MonoBehaviour,IHitable
     private bool cr_running;
     public bool CR_running { set { cr_running = value; } get { return cr_running; } }
     public System.Action OnStartShoot;
+    public System.Action OnDeath;
 
 
     public void Shoot()
@@ -29,6 +32,12 @@ public class Tank : MonoBehaviour,IHitable
     public void TakeDamage(int damage)
     {
         lives-=damage;
+        Debug.Log(transform.name + " life: " + lives);
+        if (lives<0)
+        {
+            OnDeath?.Invoke();
+            death();
+        }
     }
 
     public IEnumerator headRotate(Vector3 target)
@@ -45,5 +54,11 @@ public class Tank : MonoBehaviour,IHitable
         }
         OnStartShoot?.Invoke();
         CR_running = false;
+    }
+
+    public void death()
+    {
+        Destroy(gameObject);
+        GameObject go = Instantiate(deathTank, transform.position, transform.rotation, null);
     }
 }
