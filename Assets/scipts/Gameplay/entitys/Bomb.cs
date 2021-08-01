@@ -29,7 +29,7 @@ public class Bomb : MonoBehaviour
         switch (state)
         {
             case EnemyState.Idle:
-                Collider[] colliders = Physics.OverlapSphere(transform.position, radius,playerLayer);
+                Collider[] colliders = Physics.OverlapSphere(transform.position, distanceToActive, playerLayer);
                 foreach (Collider hit in colliders)
                 {
                     Debug.Log("enteraste");
