@@ -10,7 +10,11 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.position = target.transform.position + smothness;
-        transform.eulerAngles = rotare;
+        if (target!=null)
+        {
+            transform.position = target.transform.position + smothness;
+            transform.eulerAngles = rotare;
+        }
+        
     }
 }
