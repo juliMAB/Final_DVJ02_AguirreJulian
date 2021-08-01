@@ -12,7 +12,7 @@ public class EnemyTank : Tank
     [SerializeField] LayerMask playerLayer;
     [SerializeField] float distanceToFollow;
     [SerializeField] float distanceToShoot;
-    Transform target;
+    Transform toFolow;
 
     void Start()
     {
@@ -24,21 +24,21 @@ public class EnemyTank : Tank
         Collider[] colliders = Physics.OverlapSphere(transform.position, distanceToFollow, playerLayer);
         foreach (Collider hit in colliders)
         {
-            target = hit.transform;
+            toFolow = hit.transform;
         }
-        if (target!=null)
+        if (toFolow != null)
         {
-            float distance = Vector3.Distance(target.position, transform.position);
+            float distance = Vector3.Distance(toFolow.position, transform.position);
             if (distance <= distanceToFollow)
             {
                 animator.SetBool("OnMove", true);
-                if (Vector3.Distance(transform.position, target.position) <= distanceToShoot)
+                if (Vector3.Distance(transform.position, toFolow.position) <= distanceToShoot)
                 {
                     animator.SetBool("OnMove", false);
 
                     if (!CR_running)
                     {
-                        Target = target.position;
+                        Target = toFolow.position;
                         animator.Play("shoot");
                     }
 
@@ -47,8 +47,8 @@ public class EnemyTank : Tank
                 {
                     animator.SetBool("OnMove", true);
                 }
-                FaceTarget(target.position);
-                agent.SetDestination(target.position);
+                FaceTarget(toFolow.position);
+                agent.SetDestination(toFolow.position);
             }
             else
             {
