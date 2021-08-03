@@ -7,7 +7,10 @@ public class GameCanvasController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI score;
     [SerializeField] TextMeshProUGUI time;
+    [SerializeField] TextMeshProUGUI life;
 
+    private int lifeF;
+    public int LifeF { set { lifeF = value; } }
     private float timef;
     public float TimeF { set { timef = value; } }
     private int scoref;
@@ -54,6 +57,13 @@ public class GameCanvasController : MonoBehaviour
             }
         }
         time.text = newTime;
+    }
+
+    public void UpdateLife()
+    {
+        string newLife = "Life: ";
+        newLife += lifeF.ToString();
+        life.text = newLife; 
     }
 
 }

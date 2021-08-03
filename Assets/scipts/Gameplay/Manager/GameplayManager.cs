@@ -23,16 +23,22 @@ public class GameplayManager : MonoBehaviour
         boxesManager.OnBoxCreated += chargeBoxes;
         boxesManager.dependentStart();
         player.getShipController.OnDeath += MyTankDeath;
+        player.getShipController.OnDamage += UpdateCanvasLife;
     }
     void MyTankDeath()
     {
         Mydata.Result = Data.END.LOSE;
         EndGame();
     }
-    void UpdateCanvas()
+    void UpdateCanvasScore()
     {
         canvas.ScoreF = Mydata.Score;
         canvas.UpdateScore();
+    }
+    void UpdateCanvasLife()
+    {
+        canvas.LifeF = player.getShipController.Lives;
+        canvas.UpdateLife();
     }
     void allBoxesDestoy()
     {
@@ -49,7 +55,7 @@ public class GameplayManager : MonoBehaviour
         {
             boxesCuantity++;
             item.OnBoxKill += Mydata.OnBoxKill;
-            item.OnBoxKill += UpdateCanvas;
+            item.OnBoxKill += UpdateCanvasScore;
             item.OnBoxKill += allBoxesDestoy;
         }
     }

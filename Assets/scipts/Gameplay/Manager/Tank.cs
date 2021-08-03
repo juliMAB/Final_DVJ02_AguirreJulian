@@ -18,9 +18,11 @@ public class Tank : MonoBehaviour,IHitable
     private Vector3 target;
     public Vector3 Target { set { target = value; } get { return target; } }
     private bool cr_running=false;
+    public int Lives { get { return lives; } }
     public bool CR_running { set { cr_running = value; } get { return cr_running; } }
     public System.Action OnStartShoot;
     public System.Action OnDeath;
+    public System.Action OnDamage;
 
 
     public void Shoot()
@@ -33,6 +35,7 @@ public class Tank : MonoBehaviour,IHitable
     public void TakeDamage(int damage)
     {
         lives-=damage;
+        OnDamage?.Invoke();
         Debug.Log(transform.name + " life: " + lives);
         if (lives<0)
         {
