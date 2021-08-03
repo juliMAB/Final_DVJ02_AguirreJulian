@@ -26,6 +26,7 @@ public class Tank : MonoBehaviour,IHitable
     public void Shoot()
     {
         GameObject go = Instantiate(bullet, canonPoint.transform.position, Quaternion.identity);
+        go.transform.LookAt(target);
         go.GetComponent<Rigidbody>().AddForce((target - transform.position) * shootForce, ForceMode.Impulse);
     }
 
