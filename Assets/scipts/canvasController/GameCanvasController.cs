@@ -8,6 +8,7 @@ public class GameCanvasController : MonoBehaviour
     [SerializeField] TextMeshProUGUI score;
     [SerializeField] TextMeshProUGUI time;
     [SerializeField] TextMeshProUGUI life;
+    [SerializeField] TextMeshProUGUI InfoText;
 
     private int lifeF;
     public int LifeF { set { lifeF = value; } }
@@ -18,7 +19,8 @@ public class GameCanvasController : MonoBehaviour
     private void Start()
     {
         score.text = "Score: 0";
-        time.text = "Time:\n00:00"; 
+        time.text = "Time:\n00:00";
+        StartCoroutine(DisableInfo());
     }
     public void UpdateScore()
     {
@@ -64,6 +66,17 @@ public class GameCanvasController : MonoBehaviour
         string newLife = "Life: ";
         newLife += lifeF.ToString();
         life.text = newLife; 
+    }
+    public IEnumerator DisableInfo()
+    {
+        float t = 255;
+        while (0 < InfoText.color.a)
+        {
+            t--;
+            InfoText.color = new Color(InfoText.color.r, InfoText.color.g, InfoText.color.b, t/255f);
+            yield return new WaitForSeconds(0.001f);
+        }
+        InfoText.gameObject.SetActive(false);
     }
 
 }

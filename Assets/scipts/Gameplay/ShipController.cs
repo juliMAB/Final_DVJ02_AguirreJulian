@@ -62,11 +62,14 @@ public class ShipController : Tank
                 if (killeable != null)
                 {
 
-                    StartCoroutine(headRotate(hit.point- new Vector3(0, hit.collider.gameObject.transform.localScale.y / 2, 0) ));
+                    StartCoroutine(headRotate(hit.transform.position));
                 }
                 else
                 {
-                    StartCoroutine(headRotate(hit.point));
+                    if (hit.transform.gameObject != this.gameObject )
+                    {
+                        StartCoroutine(headRotate(hit.point));
+                    }
                 }
                 Target = hit.point;
             }
