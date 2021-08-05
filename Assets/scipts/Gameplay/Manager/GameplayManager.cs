@@ -16,14 +16,23 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] GameCanvasController canvas;
     [SerializeField] BoxesManager boxesManager;
     [SerializeField] GameSceneController gameSceneController;
+    [SerializeField] EnemySpawner enemyspawn;
     int boxesCuantity;
+    float actualGameTime;
     private void Start()
     {
+        actualGameTime = gameTime;
         Mydata.ScorePerKill = scorePerKill;
         boxesManager.OnBoxCreated += chargeBoxes;
         boxesManager.dependentStart();
         player.getShipController.OnDeath += MyTankDeath;
         player.getShipController.OnDamage += UpdateCanvasLife;
+        enemyspawn.OnEnemyCreate += AddTank;
+    }
+    private void AddTank()
+    {
+        enemyspawn.lastTank.OnDeath+= Mydata.OnBoxKill;
+        enemyspawn.lastTank.OnDeath+= UpdateCanvasScore;
     }
     void MyTankDeath()
     {
@@ -50,7 +59,6 @@ public class GameplayManager : MonoBehaviour
     }
     void chargeBoxes()
     {
-
         foreach (var item in boxesManager.boxes)
         {
             boxesCuantity++;
@@ -62,15 +70,16 @@ public class GameplayManager : MonoBehaviour
     void EndGame()
     {
         Mydata.DistanceTraveled= (player.getShipController.TotalDistance);
+        Mydata.Time = gameTime - actualGameTime;
         DataLogger.Get().SaveData(Mydata);
         gameSceneController.LoadEnd();
     }
     private void Update()
     {
-        gameTime -= Time.deltaTime;
-        canvas.TimeF = gameTime;
+        actualGameTime -= Time.deltaTime;
+        canvas.TimeF = actualGameTime;
         canvas.UpdateTime();
-        if (gameTime<0)
+        if (actualGameTime < 0)
         {
             Mydata.Result = Data.END.LOSE;
             EndGame();

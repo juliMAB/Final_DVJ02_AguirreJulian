@@ -15,6 +15,8 @@ public class Tank : MonoBehaviour,IHitable
     [SerializeField] float rotationSpeed;
     [SerializeField] int lives;
     [SerializeField] int damage;
+    [SerializeField] float invulnerableTime;
+    float invulnerableTimeD;
     private Vector3 target;
     public Vector3 Target { set { target = value; } get { return target; } }
     private bool cr_running=false;
@@ -31,17 +33,27 @@ public class Tank : MonoBehaviour,IHitable
         go.transform.LookAt(target);
         go.GetComponent<Rigidbody>().AddForce((target - transform.position) * shootForce, ForceMode.Impulse);
     }
-
+    private void Update()
+    {
+        if (invulnerableTimeD>0)
+        {
+            invulnerableTimeD -= Time.deltaTime;
+        }
+    }
     public void TakeDamage(int damage)
     {
-        lives-=damage;
-        OnDamage?.Invoke();
-        Debug.Log(transform.name + " life: " + lives);
-        if (lives<0)
+        if (invulnerableTimeD<=0)
         {
-            OnDeath?.Invoke();
-            death();
+            lives -= damage;
+            OnDamage?.Invoke();
+            Debug.Log(transform.name + " life: " + lives);
+            if (lives < 0)
+            {
+                OnDeath?.Invoke();
+                death();
+            }
         }
+        
     }
 
     public IEnumerator headRotate(Vector3 target)
@@ -58,6 +70,11 @@ public class Tank : MonoBehaviour,IHitable
         }
         OnStartShoot?.Invoke();
         CR_running = false;
+    }
+    public void HackToShoot(Vector3 target)
+    {
+        pivHead.transform.rotation = Quaternion.LookRotation(target - transform.position, transform.up);
+        OnStartShoot?.Invoke();
     }
 
     public void death()

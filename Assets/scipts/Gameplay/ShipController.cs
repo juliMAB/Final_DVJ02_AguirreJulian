@@ -61,14 +61,16 @@ public class ShipController : Tank
                 IKilleable killeable = hit.collider.gameObject.GetComponent<IKilleable>();
                 if (killeable != null)
                 {
-
-                    StartCoroutine(headRotate(hit.transform.position));
+                    HackToShoot(hit.transform.position);
+                    //StartCoroutine(headRotate(hit.transform.position));
                 }
                 else
                 {
+                    
                     if (hit.transform.gameObject != this.gameObject )
                     {
-                        StartCoroutine(headRotate(hit.point));
+                        HackToShoot(hit.point);
+                        //StartCoroutine(headRotate(hit.point));
                     }
                 }
                 Target = hit.point;

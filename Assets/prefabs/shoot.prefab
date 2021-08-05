@@ -59,6 +59,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -83,6 +84,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5143052861559978086
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -126,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explotionTarget: {fileID: 7464325556059114707, guid: f93cb2a12ba1a1d4783200a735c0ee05,
     type: 3}
-  damage: 5
+  damage: 1
 --- !u!1001 &7129383384068601184
 PrefabInstance:
   m_ObjectHideFlags: 0

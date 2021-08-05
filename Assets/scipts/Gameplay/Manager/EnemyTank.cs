@@ -13,6 +13,7 @@ public class EnemyTank : Tank
     [SerializeField] float distanceToFollow;
     [SerializeField] float distanceToShoot;
     Transform toFolow;
+    public NavMeshAgent Agent => agent;
 
     void Start()
     {
@@ -57,7 +58,6 @@ public class EnemyTank : Tank
         }
         
     }
-
         void FaceTarget(Vector3 target)
     {
         Vector3 direction = (target - transform.position).normalized;

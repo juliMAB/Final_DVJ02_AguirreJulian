@@ -20,6 +20,10 @@ public class Data
 
     float distanceTraveled;
 
+    float time;
+
+    public float Time { get { return time; } set { time = value; } }
+
     END result;
     public END Result { get { return result; } set { result = value; } }
     public float DistanceTraveled { get { return distanceTraveled; } set { distanceTraveled = value; } }
