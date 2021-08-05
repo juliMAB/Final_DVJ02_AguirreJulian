@@ -6,6 +6,7 @@ using MonoBehaviourSingletonScript;
 public class DataLogger : MonoBehaviourSingleton<DataLogger>
 {
     Data myData = new Data();
+    public string username;
 
     public Data LoadData()
     {
@@ -14,5 +15,9 @@ public class DataLogger : MonoBehaviourSingleton<DataLogger>
     public void SaveData(Data data)
     {
         myData = data; //la info del player.
+    }
+    public void ResetData()
+    {
+        myData.ResetData();
     }
 }

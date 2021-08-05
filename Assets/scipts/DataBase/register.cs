@@ -56,6 +56,7 @@ public class register : MonoBehaviour
                 textAdvert.gameObject.SetActive(true);
                 textAdvert.text = "Registered!";
                 Invoke(nameof(Successful),0.5f);
+                DataLogger.Get().username = userInput.text;
                 Debug.Log("Usuario Cargado.");
                 break;
 
@@ -116,6 +117,7 @@ public class register : MonoBehaviour
                     Debug.Log("Loggeado");
                     DataBD.Get().UserName = userInput.text;
                     Invoke(nameof(Successful), 0.5f);
+                    DataLogger.Get().username = userInput.text;
                     textAdvert.text = "Logged!";
                     break;
                 case ErrorTypeLogin.FailConnectBD:

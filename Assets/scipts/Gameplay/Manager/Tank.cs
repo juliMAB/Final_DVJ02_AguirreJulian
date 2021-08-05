@@ -20,8 +20,11 @@ public class Tank : MonoBehaviour,IHitable
     private Vector3 target;
     public Vector3 Target { set { target = value; } get { return target; } }
     private bool cr_running=false;
-    public int Lives { get { return lives; } }
     public bool CR_running { set { cr_running = value; } get { return cr_running; } }
+    public int Lives { get => lives; set => lives = value; }
+    public float InvulnerableTime { get => invulnerableTime; set => invulnerableTime = value; }
+    public float InvulnerableTimeD { get => invulnerableTimeD; set => invulnerableTimeD = value; }
+
     public System.Action OnStartShoot;
     public System.Action OnDeath;
     public System.Action OnDamage;
@@ -40,7 +43,7 @@ public class Tank : MonoBehaviour,IHitable
             invulnerableTimeD -= Time.deltaTime;
         }
     }
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage)
     {
         if (invulnerableTimeD<=0)
         {

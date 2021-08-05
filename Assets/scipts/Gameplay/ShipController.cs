@@ -11,6 +11,7 @@ public class ShipController : Tank
     public float TotalDistance => totalDistance;
     [SerializeField] float velocity;
     [SerializeField] float angleVelocity;
+    public Action OnMyTankDeath;
 
     public void Update()
     {
@@ -80,6 +81,21 @@ public class ShipController : Tank
         {
             Quaternion quatDestiny = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
             transform.rotation = Quaternion.Lerp(transform.rotation,quatDestiny,Time.deltaTime*5);
+        }
+        
+    }
+    public override void TakeDamage(int damage)
+    {
+        if (InvulnerableTimeD <= 0)
+        {
+            Lives -= damage;
+            OnDamage?.Invoke();
+            Debug.Log(transform.name + " life: " + Lives);
+            if (Lives < 0)
+            {
+                Lives = 2;
+                OnMyTankDeath?.Invoke();
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+
 public class GameplayManager : MonoBehaviour
 {
     private Data Mydata = new Data();
@@ -17,6 +18,9 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] BoxesManager boxesManager;
     [SerializeField] GameSceneController gameSceneController;
     [SerializeField] EnemySpawner enemyspawn;
+    [SerializeField] saver saver;
+    [SerializeField] SaveScoreDB saveDB;
+    [SerializeField] List<GameObject> posiblesSpawn;
     int boxesCuantity;
     float actualGameTime;
     private void Start()
@@ -25,9 +29,26 @@ public class GameplayManager : MonoBehaviour
         Mydata.ScorePerKill = scorePerKill;
         boxesManager.OnBoxCreated += chargeBoxes;
         boxesManager.dependentStart();
-        player.getShipController.OnDeath += MyTankDeath;
+       // player.getShipController.OnDeath += MyTankDeath;
         player.getShipController.OnDamage += UpdateCanvasLife;
         enemyspawn.OnEnemyCreate += AddTank;
+        player.getShipController.OnMyTankDeath+= resetTank;
+        player.getShipController.OnMyTankDeath += MyTankDeath;
+        saver.OnPlayerCollider += saveData;
+    }
+
+    void saveData()
+    {
+        Mydata.DistanceTraveled = (player.getShipController.TotalDistance);
+        Mydata.Time = gameTime - actualGameTime;
+        DataLogger.Get().SaveData(Mydata);
+        Debug.Log("DataSaved");
+        saveDB.CallUpdateActualScoreToBaseData();
+
+    }
+    private void resetTank()
+    {
+        player.gameObject.transform.position = posiblesSpawn[UnityEngine.Random.Range(0,posiblesSpawn.Count)].transform.position;
     }
     private void AddTank()
     {
@@ -36,8 +57,8 @@ public class GameplayManager : MonoBehaviour
     }
     void MyTankDeath()
     {
-        Mydata.Result = Data.END.LOSE;
-        EndGame();
+        Mydata.Score = Mydata.Score / 2;
+        Mydata.DeathCount++;
     }
     void UpdateCanvasScore()
     {
