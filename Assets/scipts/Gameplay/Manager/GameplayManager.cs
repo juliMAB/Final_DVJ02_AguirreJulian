@@ -29,7 +29,6 @@ public class GameplayManager : MonoBehaviour
         Mydata.ScorePerKill = scorePerKill;
         boxesManager.OnBoxCreated += chargeBoxes;
         boxesManager.dependentStart();
-       // player.getShipController.OnDeath += MyTankDeath;
         player.getShipController.OnDamage += UpdateCanvasLife;
         enemyspawn.OnEnemyCreate += AddTank;
         player.getShipController.OnMyTankDeath+= resetTank;
@@ -49,6 +48,10 @@ public class GameplayManager : MonoBehaviour
     private void resetTank()
     {
         player.gameObject.transform.position = posiblesSpawn[UnityEngine.Random.Range(0,posiblesSpawn.Count)].transform.position;
+        player.getShipController.Lives = 2;
+        UpdateCanvasLife();
+
+
     }
     private void AddTank()
     {
@@ -59,6 +62,7 @@ public class GameplayManager : MonoBehaviour
     {
         Mydata.Score = Mydata.Score / 2;
         Mydata.DeathCount++;
+        UpdateCanvasScore();
     }
     void UpdateCanvasScore()
     {
