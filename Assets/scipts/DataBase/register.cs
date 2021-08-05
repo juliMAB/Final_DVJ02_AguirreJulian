@@ -16,6 +16,7 @@ public class register : MonoBehaviour
     public TextMeshProUGUI passwordInput;
     public Coroutine registerCR;
     public Coroutine LoginCR;
+    string auxText = "";
 
     public UnityEvent IfSusfulyLoginOrRegister;
 
@@ -35,9 +36,18 @@ public class register : MonoBehaviour
     IEnumerator CallRegister()
     {
         WWWForm form = new WWWForm();
-        form.AddField("username", userInput.text);
-        form.AddField("password", passwordInput.text);
-
+        auxText = "";
+        for (int i = 0; i < userInput.text.Length - 1; i++)
+        {
+            auxText += userInput.text[i];
+        }
+        form.AddField("username", auxText);
+        auxText = "";
+        for (int i = 0; i < passwordInput.text.Length - 1; i++)
+        {
+            auxText += passwordInput.text[i];
+        }
+        form.AddField("password", auxText);
         UnityWebRequest www = UnityWebRequest.Post(DataBD.path + "register.php", form);
 
         yield return www.SendWebRequest();
@@ -49,7 +59,7 @@ public class register : MonoBehaviour
         {
             errorTypeRegister = (ErrorTypeRegister)aux;
         }
-
+        
         switch (errorTypeRegister)
         {
             case ErrorTypeRegister.Connect:
@@ -57,6 +67,9 @@ public class register : MonoBehaviour
                 textAdvert.text = "Registered!";
                 Invoke(nameof(Successful),0.5f);
                 DataLogger.Get().username = userInput.text;
+                
+               
+                Debug.Log(auxText.Length);
                 Debug.Log("Usuario Cargado.");
                 break;
 
@@ -94,8 +107,18 @@ public class register : MonoBehaviour
     IEnumerator LoginCoroutine()
     {
         WWWForm form = new WWWForm();
-        form.AddField("username", userInput.text);
-        form.AddField("password", passwordInput.text);
+        auxText = "";
+        for (int i = 0; i < userInput.text.Length - 1; i++)
+        {
+            auxText += userInput.text[i];
+        }
+        form.AddField("username", auxText);
+        auxText = "";
+        for (int i = 0; i < passwordInput.text.Length - 1; i++)
+        {
+            auxText += passwordInput.text[i];
+        }
+        form.AddField("password", auxText);
 
         UnityWebRequest web = UnityWebRequest.Post(DataBD.path + "login.php", form);
 

@@ -1377,7 +1377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8baf2ad62a0c934eb84bf8b18f52b63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  username: 
+  username: "pepe\u200B"
 --- !u!4 &276593314
 Transform:
   m_ObjectHideFlags: 0
