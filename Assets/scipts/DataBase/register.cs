@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class register : MonoBehaviour
 {
@@ -12,11 +13,10 @@ public class register : MonoBehaviour
     public ErrorTypeRegister errorTypeRegister = ErrorTypeRegister.End;
     public ErrorTypeLogin errorTypeLogin = ErrorTypeLogin.End;
     public TextMeshProUGUI textAdvert;
-    public TextMeshProUGUI userInput;
-    public TextMeshProUGUI passwordInput;
+    public Text userInput;
+    public Text passwordInput;
     public Coroutine registerCR;
     public Coroutine LoginCR;
-    string auxText = "";
 
     public UnityEvent IfSusfulyLoginOrRegister;
 
@@ -36,18 +36,8 @@ public class register : MonoBehaviour
     IEnumerator CallRegister()
     {
         WWWForm form = new WWWForm();
-        auxText = "";
-        for (int i = 0; i < userInput.text.Length - 1; i++)
-        {
-            auxText += userInput.text[i];
-        }
-        form.AddField("username", auxText);
-        auxText = "";
-        for (int i = 0; i < passwordInput.text.Length - 1; i++)
-        {
-            auxText += passwordInput.text[i];
-        }
-        form.AddField("password", auxText);
+        form.AddField("username", userInput.text);
+        form.AddField("password", passwordInput.text);
         UnityWebRequest www = UnityWebRequest.Post(DataBD.path + "register.php", form);
 
         yield return www.SendWebRequest();
@@ -67,9 +57,6 @@ public class register : MonoBehaviour
                 textAdvert.text = "Registered!";
                 Invoke(nameof(Successful),0.5f);
                 DataLogger.Get().username = userInput.text;
-                
-               
-                Debug.Log(auxText.Length);
                 Debug.Log("Usuario Cargado.");
                 break;
 
@@ -107,18 +94,11 @@ public class register : MonoBehaviour
     IEnumerator LoginCoroutine()
     {
         WWWForm form = new WWWForm();
-        auxText = "";
-        for (int i = 0; i < userInput.text.Length - 1; i++)
-        {
-            auxText += userInput.text[i];
-        }
-        form.AddField("username", auxText);
-        auxText = "";
-        for (int i = 0; i < passwordInput.text.Length - 1; i++)
-        {
-            auxText += passwordInput.text[i];
-        }
-        form.AddField("password", auxText);
+        form.AddField("username", userInput.text);
+        DataBD.Get().UserName = userInput.text;
+        DataLogger.Get().username = userInput.text;
+        form.AddField("password", passwordInput.text);
+       
 
         UnityWebRequest web = UnityWebRequest.Post(DataBD.path + "login.php", form);
 
@@ -138,7 +118,6 @@ public class register : MonoBehaviour
             {
                 case ErrorTypeLogin.Connect:
                     Debug.Log("Loggeado");
-                    DataBD.Get().UserName = userInput.text;
                     Invoke(nameof(Successful), 0.5f);
                     DataLogger.Get().username = userInput.text;
                     textAdvert.text = "Logged!";

@@ -42,13 +42,13 @@ public class Rank : MonoBehaviour
         {
             if (playerScore > allScores[i])
             {
-                rank = i+2;
+                rank = i;
                 break;
             }
         }
 
         if (rank < 0)
-            rank = allScores.Count+1;
+            rank = allScores.Count;
         textRank.text = "Rank: " + rank;
     }
 }
